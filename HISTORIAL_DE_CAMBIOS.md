@@ -15,6 +15,14 @@ Cualquier funcionalidad registrada aquí está blindada: ninguna IA puede elimin
 
 ## 🚀 CAMBIOS APROBADOS
 
+### [2026-10-13] — Optimización Móvil y Menús Desplegables Universales
+- **Navbar con Menú Desplegable (Dropdown):** Reemplazo de navegación horizontal por un selector desplegable flotante accesible desde cualquier pantalla móvil o de escritorio, con iconos, contadores e indicadores de estado.
+- **Eliminación Total de Menús y Scrolls Horizontales:**
+  - **Copiloto Gmail:** Selector desplegable de categorías de correos (`<select>` estilizado con chevron) y navegación fluida entre lista y detalle en móvil con botón de retorno (*"Volver a correos"*).
+  - **Tablero CRM:** Selector desplegable de etapas para móvil (*Ver Todas, Curiosos, Calificados, Negociación, Cerrados*), evitando columnas comprimidas o desbordamientos.
+  - **Portero IA:** Menú desplegable colapsable para propuestas de ejemplo (*"Probar con una propuesta de ejemplo (Desplegar)"*) en lugar de barras horizontales.
+- **Ajustes de Viewport y Padding Táctil:** Optimización en modales y sala de videollamadas para pantallas táctiles de cualquier tamaño.
+
 ### [2026-10-13] — Despliegue Inicial de InfluencerApp (CreatorGate OS) en Producción
 - **Portal Público del Creador (Link en Bio):**
   - Perfil del influencer (Mateo Silva) con métricas de engagement verificadas (485K seguidores, 8.4% engagement, 125K vistas prom.).
