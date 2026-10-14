@@ -15,6 +15,12 @@ Cualquier funcionalidad registrada aquí está blindada: ninguna IA puede elimin
 
 ## 🚀 CAMBIOS APROBADOS
 
+### [2026-10-13] — Conexión Directa IMAP / SMTP para Gmail (Sin OAuth)
+- **Bypass de Google Cloud Console:** Conexión directa mediante protocolo estándar IMAP (`imap.gmail.com`, puerto 993 SSL/TLS) y SMTP (`smtp.gmail.com`, puerto 465 SSL) utilizando Contraseñas de Aplicación de Google (App Password de 16 caracteres).
+- **Cero Fricción para el Influencer:** El creador no requiere verificar dominios, crear proyectos en Google Cloud ni esperar aprobaciones de Google; solo genera su contraseña de aplicación en 30 segundos.
+- **Sincronización Periódica y Botón de Sync:** Botón de sincronización con animación y registro del último chequeo (`lastSync`).
+- **Modal de Configuración IMAP con Guía Paso a Paso:** Mini tutorial interactivo integrado que explica visualmente cómo obtener la contraseña de aplicación desde `myaccount.google.com/security`.
+
 ### [2026-10-13] — Optimización Móvil y Menús Desplegables Universales
 - **Navbar con Menú Desplegable (Dropdown):** Reemplazo de navegación horizontal por un selector desplegable flotante accesible desde cualquier pantalla móvil o de escritorio, con iconos, contadores e indicadores de estado.
 - **Eliminación Total de Menús y Scrolls Horizontales:**
