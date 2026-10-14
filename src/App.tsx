@@ -3,6 +3,7 @@ import { Navbar, ActiveTab } from './components/layout/Navbar';
 import { CreatorHero } from './components/public-portal/CreatorHero';
 import { AiFilterChat } from './components/public-portal/AiFilterChat';
 import { ContractModal } from './components/public-portal/ContractModal';
+import { PaymentDepositModal } from './components/public-portal/PaymentDepositModal';
 import { FunnelMetrics } from './components/crm/FunnelMetrics';
 import { KanbanBoard } from './components/crm/KanbanBoard';
 import { GmailInbox } from './components/gmail/GmailInbox';
@@ -18,11 +19,13 @@ import { DeliverableType, Deal } from './types/deals';
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ActiveTab>('public');
   const { profile, policy, updatePolicy } = useCreatorPolicy();
-  const { deals, moveDealStage, addDeal, signContract, stats } = useDeals();
+  const { deals, moveDealStage, addDeal, signContract, markDepositPaid, stats } = useDeals();
   const { emails, isConnected, connectedAccount, imapConfig, isSyncing, saveImapConfig, syncEmails, executeAction } = useGmailCopilot();
 
   // Modals state
   const [isContractModalOpen, setIsContractModalOpen] = useState(false);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [activePaymentDeal, setActivePaymentDeal] = useState<Deal | null>(null);
   const [isConnectGmailOpen, setIsConnectGmailOpen] = useState(false);
   const [selectedMeetingDeal, setSelectedMeetingDeal] = useState<Deal | undefined>();
 
@@ -39,11 +42,12 @@ export const App: React.FC = () => {
     setIsContractModalOpen(true);
   };
 
-  const handleContractSigned = (signedData: { brandContact: string; brandName: string }) => {
+  const handleContractSigned = (signedData: { brandContact: string; brandName: string; signerName?: string }) => {
     if (!pendingLead) return;
     const createdDeal = addDeal({
       brandName: signedData.brandName,
       brandContact: signedData.brandContact,
+      signerName: signedData.signerName,
       budget: pendingLead.budget,
       deliverable: pendingLead.deliverable,
       stage: 'negotiation',
@@ -53,9 +57,15 @@ export const App: React.FC = () => {
       contractDate: new Date().toISOString().split('T')[0]
     });
     setIsContractModalOpen(false);
-    setPendingLead(null);
+    setActivePaymentDeal(createdDeal);
+    setIsPaymentModalOpen(true);
     setSelectedMeetingDeal(createdDeal);
-    setActiveTab('crm');
+  };
+
+  const handlePaymentSuccess = (paymentInfo: { amount: number; method: 'card_stripe' | 'wire_transfer'; txId: string }) => {
+    if (activePaymentDeal) {
+      markDepositPaid(activePaymentDeal.id, paymentInfo.amount, paymentInfo.method, paymentInfo.txId);
+    }
   };
 
   const handleOpenMeeting = (deal: Deal) => {
@@ -173,6 +183,22 @@ export const App: React.FC = () => {
         currentConfig={imapConfig}
         onSaveConfig={saveImapConfig}
       />
+
+      {activePaymentDeal && (
+        <PaymentDepositModal
+          isOpen={isPaymentModalOpen}
+          onClose={() => {
+            setIsPaymentModalOpen(false);
+            setActiveTab('crm');
+          }}
+          brandName={activePaymentDeal.brandName}
+          brandContact={activePaymentDeal.brandContact}
+          signerName={activePaymentDeal.signerName || 'Representante Autorizado'}
+          budget={activePaymentDeal.budget}
+          deliverable={activePaymentDeal.deliverable}
+          onPaymentSuccess={handlePaymentSuccess}
+        />
+      )}
     </div>
   );
 };

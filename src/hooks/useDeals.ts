@@ -14,6 +14,11 @@ const INITIAL_DEALS: Deal[] = [
     timeline: 'Noviembre 2026',
     contractSigned: true,
     contractDate: '2026-10-10',
+    signerName: 'Carlos Gómez',
+    depositPaid: true,
+    depositAmount: 1750,
+    depositMethod: 'card_stripe',
+    transactionId: 'TX-ST-882194',
     createdAt: '2026-10-05',
     driveRecordingUrl: 'https://drive.google.com/drive/u/0/folders/notion_negotiation_rec'
   },
@@ -29,6 +34,11 @@ const INITIAL_DEALS: Deal[] = [
     timeline: 'Diciembre 2026',
     contractSigned: true,
     contractDate: '2026-10-12',
+    signerName: 'Elena Ramos',
+    depositPaid: true,
+    depositAmount: 1200,
+    depositMethod: 'wire_transfer',
+    transactionId: 'TX-WIRE-441203',
     createdAt: '2026-10-11',
     meetingScheduled: 'Mañana 10:00 AM'
   },
@@ -105,6 +115,17 @@ export function useDeals() {
     } : d));
   };
 
+  const markDepositPaid = (dealId: string, amount: number, method: 'card_stripe' | 'wire_transfer', txId: string) => {
+    setDeals(prev => prev.map(d => d.id === dealId ? {
+      ...d,
+      depositPaid: true,
+      depositAmount: amount,
+      depositMethod: method,
+      transactionId: txId,
+      depositDate: new Date().toISOString().split('T')[0]
+    } : d));
+  };
+
   const stats: FunnelStats = {
     totalVisitors: 842,
     formsStarted: 154,
@@ -115,5 +136,5 @@ export function useDeals() {
     wonRevenue: deals.filter(d => d.stage === 'won').reduce((acc, d) => acc + d.budget, 0)
   };
 
-  return { deals, moveDealStage, addDeal, signContract, stats };
+  return { deals, moveDealStage, addDeal, signContract, markDepositPaid, stats };
 }

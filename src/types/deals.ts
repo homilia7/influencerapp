@@ -19,6 +19,12 @@ export interface Deal {
   timeline: string;
   contractSigned: boolean;
   contractDate?: string;
+  signerName?: string;
+  depositPaid?: boolean;
+  depositAmount?: number;
+  depositDate?: string;
+  depositMethod?: 'card_stripe' | 'wire_transfer';
+  transactionId?: string;
   rejectionReason?: string;
   createdAt: string;
   meetingScheduled?: string;

@@ -10,7 +10,7 @@ interface ContractModalProps {
   budget: number;
   deliverable: DeliverableType;
   objective: string;
-  onContractSigned: (signedData: { brandContact: string; brandName: string }) => void;
+  onContractSigned: (signedData: { brandContact: string; brandName: string; signerName?: string }) => void;
 }
 
 export const ContractModal: React.FC<ContractModalProps> = ({
@@ -41,7 +41,8 @@ export const ContractModal: React.FC<ContractModalProps> = ({
 
     onContractSigned({
       brandName: brandName.trim(),
-      brandContact: signerEmail.trim()
+      brandContact: signerEmail.trim(),
+      signerName: signerName.trim()
     });
   };
 
