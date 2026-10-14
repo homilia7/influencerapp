@@ -19,7 +19,7 @@ export const PolicySettings: React.FC<PolicySettingsProps> = ({ policy, onUpdate
   };
 
   return (
-    <div className="bg-[#111827] border border-slate-800 rounded-2xl p-6 shadow-2xl max-w-4xl mx-auto">
+    <div className="bg-[#111827] border border-slate-800 rounded-2xl p-4 sm:p-6 shadow-2xl max-w-4xl mx-auto">
       <div className="flex items-center justify-between pb-4 mb-6 border-b border-slate-800">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">

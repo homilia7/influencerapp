@@ -72,7 +72,7 @@ export const App: React.FC = () => {
         unreadEmailCount={emails.filter(e => !e.read).length}
       />
 
-      <main className="flex-1 max-w-7xl w-full mx-auto p-4 lg:p-8">
+      <main className="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-4 lg:p-8">
         {activeTab === 'public' && (
           <div className="space-y-6">
             <CreatorHero profile={profile} policy={policy} />

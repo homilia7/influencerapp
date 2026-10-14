@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Send, Bot, Sparkles, AlertCircle, FileCheck, RefreshCw } from 'lucide-react';
+import { Send, Bot, Sparkles, AlertCircle, FileCheck, RefreshCw, ChevronDown } from 'lucide-react';
 import { useGeminiFilter } from '../../hooks/useGeminiFilter';
 import { CreatorPolicy } from '../../types/creator';
 
@@ -11,6 +11,7 @@ interface AiFilterChatProps {
 export const AiFilterChat: React.FC<AiFilterChatProps> = ({ policy, onLeadQualified }) => {
   const { messages, isEvaluating, evaluation, sendMessage, resetChat } = useGeminiFilter(policy);
   const [inputText, setInputText] = useState('');
+  const [showExamples, setShowExamples] = useState(false);
 
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,6 +22,7 @@ export const AiFilterChat: React.FC<AiFilterChatProps> = ({ policy, onLeadQualif
 
   const handleQuickPrompt = (prompt: string) => {
     setInputText(prompt);
+    setShowExamples(false);
   };
 
   return (
@@ -116,27 +118,47 @@ export const AiFilterChat: React.FC<AiFilterChatProps> = ({ policy, onLeadQualif
         )}
       </div>
 
-      {/* Suggested Quick Starters */}
-      <div className="px-4 py-2 bg-[#0E1526]/60 border-t border-slate-800/60 flex items-center gap-2 overflow-x-auto text-[11px]">
-        <span className="text-slate-500 font-medium shrink-0">Ejemplos rápidos:</span>
+      {/* Collapsible Examples Menu (Menú Desplegable) */}
+      <div className="bg-[#0E1526]/80 border-t border-slate-800/80">
         <button
-          onClick={() => handleQuickPrompt(`Somos TechBrand y buscamos 1 Reel con presupuesto de $2,500 USD para Noviembre.`)}
-          className="bg-slate-800/80 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded-md shrink-0 border border-slate-700/50"
+          type="button"
+          onClick={() => setShowExamples(!showExamples)}
+          className="w-full px-4 py-2 flex items-center justify-between text-[11px] text-slate-300 hover:text-white font-medium"
         >
-          ✅ Propuesta Aprobada ($2,500 USD)
+          <span className="flex items-center gap-1.5">
+            <span className="text-amber-400">💡</span> Probar con una propuesta de ejemplo (Desplegar)
+          </span>
+          <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 ${showExamples ? 'rotate-180 text-emerald-400' : ''}`} />
         </button>
-        <button
-          onClick={() => handleQuickPrompt(`Te mandamos una caja de ropa gratis a cambio de 3 historias en Instagram.`)}
-          className="bg-slate-800/80 hover:bg-slate-700 text-rose-300 px-2.5 py-1 rounded-md shrink-0 border border-slate-700/50"
-        >
-          ❌ Canje Gratis (Rechazo)
-        </button>
-        <button
-          onClick={() => handleQuickPrompt(`Queremos 2 TikToks pero nuestro presupuesto máximo es de $250 USD.`)}
-          className="bg-slate-800/80 hover:bg-slate-700 text-amber-300 px-2.5 py-1 rounded-md shrink-0 border border-slate-700/50"
-        >
-          ❌ Bajo Presupuesto ($250 USD)
-        </button>
+
+        {showExamples && (
+          <div className="p-2 space-y-1.5 bg-[#090D16] border-t border-slate-800 animate-fade-in text-[11px]">
+            <button
+              type="button"
+              onClick={() => handleQuickPrompt(`Somos TechBrand y buscamos 1 Reel con presupuesto de $2,500 USD para Noviembre.`)}
+              className="w-full text-left px-3 py-2 rounded-lg bg-[#111827] hover:bg-slate-800 text-slate-200 flex items-center justify-between border border-slate-800"
+            >
+              <span>✅ <strong>Aprobado:</strong> 1 Reel con presupuesto de $2,500 USD</span>
+              <span className="text-emerald-400 text-[10px]">Viable</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => handleQuickPrompt(`Te mandamos una caja de ropa gratis a cambio de 3 historias en Instagram.`)}
+              className="w-full text-left px-3 py-2 rounded-lg bg-[#111827] hover:bg-slate-800 text-slate-200 flex items-center justify-between border border-slate-800"
+            >
+              <span>❌ <strong>Canje Gratuito:</strong> Ropa a cambio de 3 historias</span>
+              <span className="text-rose-400 text-[10px]">Rechazo IA</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => handleQuickPrompt(`Queremos 2 TikToks pero nuestro presupuesto máximo es de $250 USD.`)}
+              className="w-full text-left px-3 py-2 rounded-lg bg-[#111827] hover:bg-slate-800 text-slate-200 flex items-center justify-between border border-slate-800"
+            >
+              <span>❌ <strong>Bajo Presupuesto:</strong> $250 USD para 2 TikToks</span>
+              <span className="text-amber-400 text-[10px]">Bajo Umbral</span>
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Input */}

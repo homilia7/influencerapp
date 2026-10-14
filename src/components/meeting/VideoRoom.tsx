@@ -32,9 +32,9 @@ export const VideoRoom: React.FC<VideoRoomProps> = ({ selectedDeal, onCloseMeeti
   };
 
   return (
-    <div className="bg-[#111827] border border-slate-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col xl:flex-row h-[620px]">
+    <div className="bg-[#111827] border border-slate-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col xl:flex-row min-h-[580px] xl:h-[620px]">
       {/* Video Call Stage */}
-      <div className="flex-1 bg-[#090D16] p-4 flex flex-col justify-between relative">
+      <div className="flex-1 bg-[#090D16] p-3 sm:p-4 flex flex-col justify-between relative">
         {/* Top Info Bar */}
         <div className="flex items-center justify-between z-10 bg-[#111827]/80 backdrop-blur-md p-3 rounded-xl border border-slate-800">
           <div className="flex items-center gap-3">
@@ -87,7 +87,7 @@ export const VideoRoom: React.FC<VideoRoomProps> = ({ selectedDeal, onCloseMeeti
         </div>
 
         {/* Controls Bar */}
-        <div className="flex items-center justify-center gap-3 z-10">
+        <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 z-10 pt-2">
           <button
             onClick={() => setMicActive(!micActive)}
             className={`p-3 rounded-xl transition-all ${micActive ? 'bg-slate-800 text-white' : 'bg-rose-600 text-white'}`}
@@ -104,7 +104,7 @@ export const VideoRoom: React.FC<VideoRoomProps> = ({ selectedDeal, onCloseMeeti
 
           <button
             onClick={handleEndMeeting}
-            className="px-5 py-3 bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs rounded-xl shadow-lg shadow-rose-600/30 transition-all"
+            className="w-full sm:w-auto px-4 sm:px-5 py-3 bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs rounded-xl shadow-lg shadow-rose-600/30 transition-all text-center"
           >
             Finalizar Llamada & Resguardar en Drive
           </button>
