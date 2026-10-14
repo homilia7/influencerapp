@@ -19,7 +19,7 @@ export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ActiveTab>('public');
   const { profile, policy, updatePolicy } = useCreatorPolicy();
   const { deals, moveDealStage, addDeal, signContract, stats } = useDeals();
-  const { emails, isConnected, connectedAccount, executeAction, connectAccount } = useGmailCopilot();
+  const { emails, isConnected, connectedAccount, imapConfig, isSyncing, saveImapConfig, syncEmails, executeAction } = useGmailCopilot();
 
   // Modals state
   const [isContractModalOpen, setIsContractModalOpen] = useState(false);
@@ -131,6 +131,9 @@ export const App: React.FC = () => {
               emails={emails}
               isConnected={isConnected}
               connectedAccount={connectedAccount}
+              isSyncing={isSyncing}
+              lastSync={imapConfig.lastSync}
+              onSyncClick={syncEmails}
               onExecuteAction={executeAction}
               onConnectClick={() => setIsConnectGmailOpen(true)}
             />
@@ -167,8 +170,8 @@ export const App: React.FC = () => {
       <ConnectGmailModal
         isOpen={isConnectGmailOpen}
         onClose={() => setIsConnectGmailOpen(false)}
-        currentEmail={connectedAccount}
-        onConnect={connectAccount}
+        currentConfig={imapConfig}
+        onSaveConfig={saveImapConfig}
       />
     </div>
   );

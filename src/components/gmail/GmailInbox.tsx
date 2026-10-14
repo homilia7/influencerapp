@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import { Mail, Sparkles, Check, Send, ChevronDown, ArrowLeft, Scale, ShieldAlert } from 'lucide-react';
+import { Mail, Sparkles, Check, Send, ChevronDown, ArrowLeft, Scale, ShieldAlert, RefreshCw, Server } from 'lucide-react';
 import { EmailMessage, EmailCategory, QuickActionType } from '../../types/gmail';
 
 interface GmailInboxProps {
   emails: EmailMessage[];
   isConnected: boolean;
   connectedAccount: string;
+  isSyncing?: boolean;
+  lastSync?: string;
+  onSyncClick?: () => void;
   onExecuteAction: (emailId: string, action: QuickActionType) => void;
   onConnectClick: () => void;
 }
@@ -14,6 +17,9 @@ export const GmailInbox: React.FC<GmailInboxProps> = ({
   emails,
   isConnected,
   connectedAccount,
+  isSyncing,
+  lastSync,
+  onSyncClick,
   onExecuteAction,
   onConnectClick,
 }) => {
@@ -41,17 +47,35 @@ export const GmailInbox: React.FC<GmailInboxProps> = ({
           <div className="flex items-center gap-2">
             <Mail className="w-4 h-4 text-rose-400" />
             <div>
-              <h3 className="font-bold text-white text-xs">Copiloto Gmail</h3>
-              <p className="text-[10px] text-slate-400 font-mono truncate max-w-[140px] sm:max-w-[200px]">{connectedAccount}</p>
+              <h3 className="font-bold text-white text-xs flex items-center gap-1.5">
+                Copiloto IMAP
+                <span className="text-[9px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-1.5 py-0.2 rounded font-mono">
+                  SSL:993
+                </span>
+              </h3>
+              <p className="text-[10px] text-slate-400 font-mono truncate max-w-[130px] sm:max-w-[180px]">{connectedAccount}</p>
             </div>
           </div>
 
-          <button
-            onClick={onConnectClick}
-            className="text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded-lg border border-slate-700 font-medium"
-          >
-            {isConnected ? 'Vinculada' : 'Conectar'}
-          </button>
+          <div className="flex items-center gap-1.5">
+            {onSyncClick && (
+              <button
+                type="button"
+                onClick={onSyncClick}
+                disabled={isSyncing}
+                title="Sincronizar buzón IMAP"
+                className="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin text-emerald-400' : ''}`} />
+              </button>
+            )}
+            <button
+              onClick={onConnectClick}
+              className="text-[10px] bg-indigo-600/30 hover:bg-indigo-600/50 text-indigo-300 px-2 py-1 rounded-lg border border-indigo-500/30 font-medium flex items-center gap-1"
+            >
+              <Server className="w-3 h-3" /> Config IMAP
+            </button>
+          </div>
         </div>
 
         {/* Menú Desplegable de Categorías (Sin menú horizontal) */}

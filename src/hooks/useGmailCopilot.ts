@@ -1,5 +1,16 @@
 import { useState, useEffect } from 'react';
-import { EmailMessage, QuickActionType } from '../types/gmail';
+import { EmailMessage, QuickActionType, ImapConfig } from '../types/gmail';
+
+const DEFAULT_IMAP: ImapConfig = {
+  email: 'mateo@mateosilva.tech',
+  host: 'imap.gmail.com',
+  port: 993,
+  useSsl: true,
+  smtpHost: 'smtp.gmail.com',
+  smtpPort: 465,
+  lastSync: 'Hace 5 minutos',
+  isConnected: true
+};
 
 const INITIAL_EMAILS: EmailMessage[] = [
   {
@@ -67,11 +78,22 @@ export function useGmailCopilot() {
 
   const [connectedAccount, setConnectedAccount] = useState<string>('mateo@mateosilva.tech');
 
+  const [imapConfig, setImapConfig] = useState<ImapConfig>(() => {
+    const saved = localStorage.getItem('creator_imap_config');
+    return saved ? JSON.parse(saved) : DEFAULT_IMAP;
+  });
+
+  const [isSyncing, setIsSyncing] = useState<boolean>(false);
+
   useEffect(() => {
     localStorage.setItem('creator_gmail', JSON.stringify(emails));
   }, [emails]);
 
-  const executeAction = (emailId: string, action: QuickActionType) => {
+  useEffect(() => {
+    localStorage.setItem('creator_imap_config', JSON.stringify(imapConfig));
+  }, [imapConfig]);
+
+  const executeAction = (emailId: string, _action: QuickActionType) => {
     setEmails(prev => prev.map(e => {
       if (e.id === emailId) {
         return { ...e, status: 'action_taken', read: true };
@@ -80,16 +102,40 @@ export function useGmailCopilot() {
     }));
   };
 
-  const connectAccount = (email: string) => {
-    setConnectedAccount(email);
+  const saveImapConfig = (config: Partial<ImapConfig>) => {
+    setImapConfig(prev => {
+      const updated = { ...prev, ...config, isConnected: true, lastSync: 'Recién conectado' };
+      localStorage.setItem('creator_imap_config', JSON.stringify(updated));
+      return updated;
+    });
+    setConnectedAccount(config.email || imapConfig.email);
     setIsConnected(true);
     localStorage.setItem('gmail_connected', 'true');
   };
 
+  const syncEmails = () => {
+    setIsSyncing(true);
+    setTimeout(() => {
+      setIsSyncing(false);
+      setImapConfig(prev => ({ ...prev, lastSync: 'Hace unos segundos' }));
+    }, 1200);
+  };
+
   const disconnectAccount = () => {
     setIsConnected(false);
+    setImapConfig(prev => ({ ...prev, isConnected: false }));
     localStorage.setItem('gmail_connected', 'false');
   };
 
-  return { emails, isConnected, connectedAccount, executeAction, connectAccount, disconnectAccount };
+  return {
+    emails,
+    isConnected,
+    connectedAccount: imapConfig.email || connectedAccount,
+    imapConfig,
+    isSyncing,
+    saveImapConfig,
+    syncEmails,
+    executeAction,
+    disconnectAccount
+  };
 }

@@ -23,3 +23,15 @@ export interface EmailMessage {
   suggestedAction: QuickActionType;
   status: 'pending' | 'action_taken';
 }
+
+export interface ImapConfig {
+  email: string;
+  appPassword?: string;
+  host: string;
+  port: number;
+  useSsl: boolean;
+  smtpHost: string;
+  smtpPort: number;
+  lastSync?: string;
+  isConnected: boolean;
+}
