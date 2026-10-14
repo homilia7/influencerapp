@@ -15,6 +15,19 @@ Cualquier funcionalidad registrada aquí está blindada: ninguna IA puede elimin
 
 ## 🚀 CAMBIOS APROBADOS
 
+### [2026-10-13] — Contrato Formal en PDF (LegalTech) y Pasarela de Anticipo del 50%
+- **Generador de Contratos en PDF Formal (`jsPDF`):**
+  - Creación de documento jurídico descargable con membrete oficial de CreatorGate OS.
+  - Identificador único de contrato (`CTR-YYYYMMDD-XXXXX`).
+  - Cláusulas vinculantes estructuradas: Objeto, tarifa en USD, licencia digital de imagen por 30 días, prohibición de reentrenamiento de IA, penalización por mora del 1.5% diario y soberanía de datos.
+  - Sello digital con hash criptográfico de integridad (SHA256), timestamp y firma digital estampada.
+  - Botón de descarga instantánea tanto en el portal de la marca como en cada tarjeta del CRM Kanban.
+- **Pasarela de Cobro del Anticipo del 50% (Bloqueo de Agenda):**
+  - Modal interactivo post-firma que exige el pago del 50% de anticipo para formalizar la reserva de producción.
+  - Métodos soportados: Tarjeta de Crédito/Débito (Stripe Seguro) y Transferencia Bancaria Internacional (Wire/SWIFT/IBAN).
+  - Generación de ID de transacción fiscal (`TX-ST-XXXXXX`).
+  - Badge visual en el CRM: `💰 Anticipo 50% Pagado ($X USD)` vs `⏳ Anticipo Pendiente`.
+
 ### [2026-10-13] — Conexión Directa IMAP / SMTP para Gmail (Sin OAuth)
 - **Bypass de Google Cloud Console:** Conexión directa mediante protocolo estándar IMAP (`imap.gmail.com`, puerto 993 SSL/TLS) y SMTP (`smtp.gmail.com`, puerto 465 SSL) utilizando Contraseñas de Aplicación de Google (App Password de 16 caracteres).
 - **Cero Fricción para el Influencer:** El creador no requiere verificar dominios, crear proyectos en Google Cloud ni esperar aprobaciones de Google; solo genera su contraseña de aplicación en 30 segundos.
